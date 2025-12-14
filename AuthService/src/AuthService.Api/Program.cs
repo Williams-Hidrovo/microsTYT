@@ -82,6 +82,38 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
+// Ejecutar migraciones y seed al iniciar
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<AuthDbContext>();
+
+        // Ejecutar migraciones pendientes
+        context.Database.Migrate();
+
+        // Seed de usuario admin si no existe
+        if (!context.Users.Any(u => u.Email == "admin@gmail.com"))
+        {
+            var adminUser = new AuthService.Domain.Entities.User(
+                "admin@gmail.com",
+                BCrypt.Net.BCrypt.HashPassword("admin")
+            );
+            context.Users.Add(adminUser);
+            await context.SaveChangesAsync();
+
+            var logger = services.GetRequiredService<ILogger<Program>>();
+            logger.LogInformation("Usuario admin creado exitosamente");
+        }
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Error durante la inicialización de la base de datos");
+    }
+}
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
