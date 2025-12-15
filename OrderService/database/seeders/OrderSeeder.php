@@ -22,50 +22,38 @@ class OrderSeeder extends Seeder
             return;
         }
 
-        $products = [
-            'Laptop Dell XPS 13',
-            'iPhone 15 Pro',
-            'Samsung Galaxy S24',
-            'Monitor LG UltraWide',
-            'Teclado Mecánico Logitech',
-            'Mouse Gamer Razer',
-            'Audífonos Sony WH-1000XM5',
-            'iPad Pro 12.9',
-            'MacBook Pro 14',
-            'Apple Watch Series 9',
+        $orderTypes = [
+            ['notes' => 'Laptop Dell XPS 13 - 1 unidad', 'amount' => 1299.99],
+            ['notes' => 'iPhone 15 Pro - 2 unidades', 'amount' => 2199.98],
+            ['notes' => 'Samsung Galaxy S24 - 1 unidad', 'amount' => 899.99],
+            ['notes' => 'Monitor LG UltraWide 34" - 1 unidad', 'amount' => 599.99],
+            ['notes' => 'Teclado Mecánico Logitech + Mouse Gamer Razer', 'amount' => 189.99],
+            ['notes' => 'Audífonos Sony WH-1000XM5', 'amount' => 349.99],
+            ['notes' => 'iPad Pro 12.9" - 1 unidad', 'amount' => 1099.99],
+            ['notes' => 'MacBook Pro 14" - 1 unidad', 'amount' => 1999.99],
+            ['notes' => 'Apple Watch Series 9 - 2 unidades', 'amount' => 799.98],
+            ['notes' => 'Kit de oficina completo (monitor, teclado, mouse)', 'amount' => 499.99],
         ];
 
         $statuses = ['pending', 'processing', 'completed', 'cancelled'];
 
-        $orders = [];
-
         // Crear 15 órdenes de ejemplo
         for ($i = 1; $i <= 15; $i++) {
             $customer = $customers->random();
-            $product = $products[array_rand($products)];
-            $quantity = rand(1, 5);
-            $unitPrice = rand(500, 5000);
+            $orderType = $orderTypes[array_rand($orderTypes)];
+            $orderDate = Carbon::now()->subDays(rand(0, 30));
             
-            $orders[] = [
+            Order::create([
                 'customer_id' => $customer->id,
-                'product' => $product,
-                'quantity' => $quantity,
-                'total_amount' => $quantity * $unitPrice,
+                'order_number' => 'ORD-' . str_pad($i, 6, '0', STR_PAD_LEFT),
                 'status' => $statuses[array_rand($statuses)],
-                'created_at' => Carbon::now()->subDays(rand(0, 30)),
-                'updated_at' => Carbon::now()->subDays(rand(0, 30)),
-            ];
-        }
-
-        foreach ($orders as $order) {
-            Order::firstOrCreate(
-                [
-                    'customer_id' => $order['customer_id'],
-                    'product' => $order['product'],
-                    'created_at' => $order['created_at'],
-                ],
-                $order
-            );
+                'total_amount' => $orderType['amount'],
+                'currency' => 'USD',
+                'notes' => $orderType['notes'],
+                'order_date' => $orderDate,
+                'created_at' => $orderDate,
+                'updated_at' => $orderDate,
+            ]);
         }
 
         $this->command->info('Órdenes de prueba creadas exitosamente');

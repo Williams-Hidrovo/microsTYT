@@ -1,0 +1,77 @@
+<app-navbar></app-navbar>
+
+<div class="container" style="padding-top: 20px;">
+    <div class="header-section">
+        <h1>Gestión de Pedidos</h1>
+        <button class="btn btn-primary" routerLink="/orders/new">
+            + Nuevo Pedido
+        </button>
+    </div>
+
+    <div class="card">
+        <div class="filters-section">
+            <input type="text" class="form-control" placeholder="Buscar por ID o cliente..." [(ngModel)]="searchTerm"
+                (ngModelChange)="onSearch()" style="max-width: 300px;" />
+
+            <select class="form-control" [(ngModel)]="filterStatus" (ngModelChange)="onFilterChange()"
+                style="max-width: 200px;">
+                <option value="">Todos los estados</option>
+                <option value="pending">Pendiente</option>
+                <option value="processing">En Proceso</option>
+                <option value="completed">Completado</option>
+                <option value="cancelled">Cancelado</option>
+            </select>
+        </div>
+
+        <div *ngIf="loading" class="loading">
+            <div class="spinner"></div>
+        </div>
+
+        <div class="alert alert-error" *ngIf="errorMessage">
+            {{ errorMessage }}
+        </div>
+
+        <div *ngIf="!loading" class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Fecha</th>
+                        <th>Cliente ID</th>
+                        <th>Estado</th>
+                        <th>Total</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let order of filteredOrders">
+                        <td>#{{ order.id }}</td>
+                        <td>{{ order.order_date | date:'short' }}</td>
+                        <td>Cliente #{{ order.customer_id }}</td>
+                        <td>
+                            <span class="badge" [class]="getStatusClass(order.status)">
+                                {{ order.status }}
+                            </span>
+                        </td>
+                        <td>${{ formatAmount(order.total_amount) }}</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn btn-sm btn-secondary" (click)="editOrder(order.id)">
+                                    Editar
+                                </button>
+                                <button class="btn btn-sm btn-danger" (click)="deleteOrder(order.id)">
+                                    Eliminar
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr *ngIf="filteredOrders.length === 0">
+                        <td colspan="6" style="text-align: center;">
+                            No hay pedidos disponibles
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

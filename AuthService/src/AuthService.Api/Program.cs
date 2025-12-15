@@ -33,6 +33,17 @@ builder.Services.AddSingleton(jwtOptions);
 builder.Services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
 builder.Services.AddScoped<IAuthService, AuthService.Application.Services.AuthService>();
 
+// Configurar CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -98,7 +109,7 @@ using (var scope = app.Services.CreateScope())
         {
             var adminUser = new AuthService.Domain.Entities.User(
                 "admin@gmail.com",
-                BCrypt.Net.BCrypt.HashPassword("admin")
+                BCrypt.Net.BCrypt.HashPassword("admin123")
             );
             context.Users.Add(adminUser);
             await context.SaveChangesAsync();
@@ -121,6 +132,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Habilitar CORS
+app.UseCors("AllowAll");
 
 app.UseAuthentication();
 app.UseAuthorization();

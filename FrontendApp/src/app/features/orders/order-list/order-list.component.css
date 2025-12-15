@@ -1,0 +1,71 @@
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.filters-section {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 13px;
+}
+
+.badge {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.badge-completed {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.badge-pending {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.badge-processing {
+    background-color: #d1ecf1;
+    color: #0c5460;
+}
+
+.badge-cancelled {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+@media (max-width: 768px) {
+    .header-section {
+        flex-direction: column;
+        gap: 15px;
+        align-items: stretch;
+    }
+
+    .filters-section {
+        flex-direction: column;
+    }
+
+    .filters-section .form-control {
+        max-width: 100% !important;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+}

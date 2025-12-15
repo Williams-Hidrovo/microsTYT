@@ -1,0 +1,99 @@
+<app-navbar></app-navbar>
+
+<div class="container" style="padding-top: 20px;">
+    <div class="card">
+        <h1>{{ isEditMode ? 'Editar Pedido' : 'Nuevo Pedido' }}</h1>
+
+        <div class="alert alert-error" *ngIf="errorMessage">
+            {{ errorMessage }}
+        </div>
+
+        <div class="alert alert-success" *ngIf="successMessage">
+            {{ successMessage }}
+        </div>
+
+        <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="customer_id">Cliente *</label>
+                    <select id="customer_id" class="form-control" formControlName="customer_id"
+                        [class.error]="f['customer_id'].invalid && f['customer_id'].touched">
+                        <option value="">Seleccione un cliente</option>
+                        <option *ngFor="let customer of customers" [value]="customer.id">
+                            {{ customer.name }} - {{ customer.email }}
+                        </option>
+                    </select>
+                    <div class="error-message" *ngIf="f['customer_id'].invalid && f['customer_id'].touched">
+                        Debe seleccionar un cliente
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="order_number">Número de Pedido</label>
+                    <input type="text" id="order_number" class="form-control" formControlName="order_number"
+                        placeholder="Dejar vacío para generar automáticamente" />
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="order_date">Fecha del Pedido</label>
+                    <input type="datetime-local" id="order_date" class="form-control" formControlName="order_date" />
+                    <small class="form-text text-muted">Dejar vacío para usar la fecha actual</small>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="status">Estado *</label>
+                    <select id="status" class="form-control" formControlName="status"
+                        [class.error]="f['status'].invalid && f['status'].touched">
+                        <option *ngFor="let status of statuses" [value]="status.value">
+                            {{ status.label }}
+                        </option>
+                    </select>
+                    <div class="error-message" *ngIf="f['status'].invalid && f['status'].touched">
+                        El estado es requerido
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="total_amount">Monto Total *</label>
+                    <input type="number" id="total_amount" class="form-control" formControlName="total_amount"
+                        step="0.01" min="0" [class.error]="f['total_amount'].invalid && f['total_amount'].touched" />
+                    <div class="error-message" *ngIf="f['total_amount'].invalid && f['total_amount'].touched">
+                        <span *ngIf="f['total_amount'].errors?.['required']">El monto es requerido</span>
+                        <span *ngIf="f['total_amount'].errors?.['min']">El monto debe ser mayor a 0</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="currency">Moneda</label>
+                    <select id="currency" class="form-control" formControlName="currency">
+                        <option value="USD">USD</option>
+                        <option value="EUR">EUR</option>
+                        <option value="MXN">MXN</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group" style="width: 100%;">
+                    <label for="notes">Notas</label>
+                    <textarea id="notes" class="form-control" formControlName="notes" rows="3"
+                        placeholder="Notas adicionales sobre el pedido"></textarea>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" (click)="cancel()">
+                    Cancelar
+                </button>
+                <button type="submit" class="btn btn-primary" [disabled]="loading || orderForm.invalid">
+                    <span *ngIf="!loading">{{ isEditMode ? 'Actualizar' : 'Crear' }}</span>
+                    <span *ngIf="loading">Guardando...</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

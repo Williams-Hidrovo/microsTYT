@@ -1,0 +1,32 @@
+# Assets Folder
+
+Coloca aquí tus recursos estáticos como:
+- Imágenes
+- Logos
+- Iconos
+- Fuentes personalizadas
+- etc.
+
+## Ejemplo de uso en componentes:
+
+```typescript
+// En HTML
+<img src="assets/images/logo.png" alt="Logo">
+
+// En CSS
+background-image: url('/assets/images/background.jpg');
+```
+
+## Estructura recomendada:
+
+```
+assets/
+├── images/
+│   ├── logo.png
+│   ├── icons/
+│   └── backgrounds/
+├── fonts/
+│   └── custom-font.ttf
+└── data/
+    └── config.json
+```

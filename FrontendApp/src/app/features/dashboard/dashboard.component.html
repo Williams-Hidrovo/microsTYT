@@ -1,0 +1,129 @@
+<app-navbar></app-navbar>
+
+<div class="dashboard-container">
+    <div class="container">
+        <h1>Dashboard de Estadísticas</h1>
+
+        <div *ngIf="loading" class="loading">
+            <div class="spinner"></div>
+        </div>
+
+        <div *ngIf="!loading">
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card card">
+                    <div class="stat-icon" style="background-color: #007bff;">
+                        <span>📦</span>
+                    </div>
+                    <div class="stat-content">
+                        <h3>{{ stats.totalOrders }}</h3>
+                        <p>Total de Pedidos</p>
+                    </div>
+                </div>
+
+                <div class="stat-card card">
+                    <div class="stat-icon" style="background-color: #28a745;">
+                        <span>✓</span>
+                    </div>
+                    <div class="stat-content">
+                        <h3>{{ stats.completedOrders }}</h3>
+                        <p>Completados</p>
+                    </div>
+                </div>
+
+                <div class="stat-card card">
+                    <div class="stat-icon" style="background-color: #ffc107;">
+                        <span>⏳</span>
+                    </div>
+                    <div class="stat-content">
+                        <h3>{{ stats.pendingOrders }}</h3>
+                        <p>Pendientes</p>
+                    </div>
+                </div>
+
+                <div class="stat-card card">
+                    <div class="stat-icon" style="background-color: #17a2b8;">
+                        <span>⚙️</span>
+                    </div>
+                    <div class="stat-content">
+                        <h3>{{ stats.processingOrders }}</h3>
+                        <p>En Proceso</p>
+                    </div>
+                </div>
+
+                <div class="stat-card card">
+                    <div class="stat-icon" style="background-color: #6f42c1;">
+                        <span>👥</span>
+                    </div>
+                    <div class="stat-content">
+                        <h3>{{ stats.activeCustomers }}</h3>
+                        <p>Clientes Activos</p>
+                    </div>
+                </div>
+
+                <div class="stat-card card">
+                    <div class="stat-icon" style="background-color: #6f42c1;">
+                        <span>💰</span>
+                    </div>
+                    <div class="stat-content">
+                        <h3>${{ stats.totalRevenue.toFixed(2) }}</h3>
+                        <p>Ingresos Totales</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="charts-grid">
+                <div class="card chart-container">
+                    <h2>Actividad de Pedidos (Últimos 30 días)</h2>
+                    <div class="chart-wrapper">
+                        <canvas baseChart [data]="lineChartData" [options]="lineChartOptions" [type]="'line'">
+                        </canvas>
+                    </div>
+                </div>
+
+                <div class="card chart-container">
+                    <h2>Estado de Pedidos</h2>
+                    <div class="chart-wrapper">
+                        <canvas baseChart [data]="pieChartData" [options]="pieChartOptions" [type]="'pie'">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Orders -->
+            <div class="card">
+                <h2>Pedidos Recientes</h2>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Fecha</th>
+                                <th>Cliente</th>
+                                <th>Estado</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let order of orders.slice(0, 5)">
+                                <td>#{{ order.id }}</td>
+                                <td>{{ order.order_date | date:'short' }}</td>
+                                <td>Cliente #{{ order.customer_id }}</td>
+                                <td>
+                                    <span class="badge" [class]="'badge-' + order.status">
+                                        {{ order.status }}
+                                    </span>
+                                </td>
+                                <td>${{ formatAmount(order.total_amount) }}</td>
+                            </tr>
+                            <tr *ngIf="orders.length === 0">
+                                <td colspan="5" style="text-align: center;">No hay pedidos disponibles</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

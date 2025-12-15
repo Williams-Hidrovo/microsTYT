@@ -1,0 +1,20 @@
+<nav class="navbar">
+    <div class="container">
+        <div class="navbar-content">
+            <div class="navbar-brand">
+                <h2>📊 Microservicios</h2>
+            </div>
+
+            <div class="navbar-menu">
+                <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+                <a routerLink="/customers" routerLinkActive="active">Clientes</a>
+                <a routerLink="/orders" routerLinkActive="active">Pedidos</a>
+            </div>
+
+            <div class="navbar-user" *ngIf="currentUser">
+                <span class="user-name">{{ currentUser.username || currentUser.email }}</span>
+                <button class="btn btn-secondary btn-sm" (click)="logout()">Salir</button>
+            </div>
+        </div>
+    </div>
+</nav>

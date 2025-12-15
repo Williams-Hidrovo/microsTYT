@@ -1,0 +1,70 @@
+.navbar {
+    background: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 0;
+}
+
+.navbar-brand h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.navbar-menu {
+    display: flex;
+    gap: 30px;
+}
+
+.navbar-menu a {
+    text-decoration: none;
+    color: #666;
+    font-weight: 500;
+    transition: color 0.3s;
+    padding: 8px 0;
+    border-bottom: 2px solid transparent;
+}
+
+.navbar-menu a:hover {
+    color: #007bff;
+}
+
+.navbar-menu a.active {
+    color: #007bff;
+    border-bottom-color: #007bff;
+}
+
+.navbar-user {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-name {
+    color: #333;
+    font-weight: 500;
+}
+
+.btn-sm {
+    padding: 6px 16px;
+    font-size: 13px;
+}
+
+@media (max-width: 768px) {
+    .navbar-content {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .navbar-menu {
+        gap: 15px;
+    }
+}

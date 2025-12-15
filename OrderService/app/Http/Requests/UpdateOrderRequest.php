@@ -21,7 +21,7 @@ class UpdateOrderRequest extends FormRequest
      */
     public function rules(): array
     {
-        $orderId = $this->route('order')->id;
+        $orderId = $this->route('pedido') ? $this->route('pedido')->id : null;
 
         return [
             'customer_id' => 'sometimes|required|exists:customers,id',

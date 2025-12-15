@@ -1,0 +1,60 @@
+<app-navbar></app-navbar>
+
+<div class="container" style="padding-top: 20px;">
+    <div class="card">
+        <h1>{{ isEditMode ? 'Editar Cliente' : 'Nuevo Cliente' }}</h1>
+
+        <div class="alert alert-error" *ngIf="errorMessage">
+            {{ errorMessage }}
+        </div>
+
+        <div class="alert alert-success" *ngIf="successMessage">
+            {{ successMessage }}
+        </div>
+
+        <form [formGroup]="customerForm" (ngSubmit)="onSubmit()">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="name">Nombre *</label>
+                    <input type="text" id="name" class="form-control" formControlName="name"
+                        [class.error]="f['name'].invalid && f['name'].touched" />
+                    <div class="error-message" *ngIf="f['name'].invalid && f['name'].touched">
+                        <span *ngIf="f['name'].errors?.['required']">El nombre es requerido</span>
+                        <span *ngIf="f['name'].errors?.['minlength']">Mínimo 3 caracteres</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" class="form-control" formControlName="email"
+                        [class.error]="f['email'].invalid && f['email'].touched" />
+                    <div class="error-message" *ngIf="f['email'].invalid && f['email'].touched">
+                        <span *ngIf="f['email'].errors?.['required']">El email es requerido</span>
+                        <span *ngIf="f['email'].errors?.['email']">Email inválido</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="phone">Teléfono *</label>
+                    <input type="tel" id="phone" class="form-control" formControlName="phone"
+                        [class.error]="f['phone'].invalid && f['phone'].touched" />
+                    <div class="error-message" *ngIf="f['phone'].invalid && f['phone'].touched">
+                        El teléfono es requerido
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" (click)="cancel()">
+                    Cancelar
+                </button>
+                <button type="submit" class="btn btn-primary" [disabled]="loading || customerForm.invalid">
+                    <span *ngIf="!loading">{{ isEditMode ? 'Actualizar' : 'Crear' }}</span>
+                    <span *ngIf="loading">Guardando...</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

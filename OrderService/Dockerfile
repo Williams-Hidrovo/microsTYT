@@ -38,9 +38,6 @@ COPY . /var/www
 # Install dependencies
 RUN composer install --optimize-autoloader
 
-# Generate Swagger documentation
-RUN php artisan l5-swagger:generate
-
 # Copy existing application directory permissions
 RUN chown -R www-data:www-data /var/www \
     && chmod -R 755 /var/www/storage \

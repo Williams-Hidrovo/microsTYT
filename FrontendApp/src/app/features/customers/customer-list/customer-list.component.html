@@ -1,0 +1,62 @@
+<app-navbar></app-navbar>
+
+<div class="container" style="padding-top: 20px;">
+    <div class="header-section">
+        <h1>Gestión de Clientes</h1>
+        <button class="btn btn-primary" routerLink="/customers/new">
+            + Nuevo Cliente
+        </button>
+    </div>
+
+    <div class="card">
+        <div class="search-section">
+            <input type="text" class="form-control" placeholder="Buscar por nombre, email o teléfono..."
+                [(ngModel)]="searchTerm" (ngModelChange)="onSearch()" />
+        </div>
+
+        <div *ngIf="loading" class="loading">
+            <div class="spinner"></div>
+        </div>
+
+        <div class="alert alert-error" *ngIf="errorMessage">
+            {{ errorMessage }}
+        </div>
+
+        <div *ngIf="!loading" class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Teléfono</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let customer of filteredCustomers">
+                        <td>{{ customer.id }}</td>
+                        <td>{{ customer.name }}</td>
+                        <td>{{ customer.email }}</td>
+                        <td>{{ customer.phone }}</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn btn-sm btn-secondary" (click)="editCustomer(customer.id)">
+                                    Editar
+                                </button>
+                                <button class="btn btn-sm btn-danger" (click)="deleteCustomer(customer.id)">
+                                    Eliminar
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr *ngIf="filteredCustomers.length === 0">
+                        <td colspan="5" style="text-align: center;">
+                            No hay clientes disponibles
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
