@@ -39,6 +39,15 @@ docker exec orderservice php artisan migrate:fresh --force --seed
 
 **Nota**: Este comando eliminará todos los datos existentes y recreará las tablas con datos de prueba.
 
+
+
+
+
+
+
+
+
+
 ##  Actualización de Servicios
 
 ### Actualizar Frontend
