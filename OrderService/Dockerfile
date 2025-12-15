@@ -44,8 +44,9 @@ RUN chown -R www-data:www-data /var/www \
     && chmod -R 755 /var/www/bootstrap/cache
 
 # Copy and set permissions for entrypoint script
-COPY entrypoint.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/entrypoint.sh
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh \
+    && dos2unix /usr/local/bin/entrypoint.sh || sed -i 's/\r$//' /usr/local/bin/entrypoint.sh
 
 # Expose port 80
 EXPOSE 80
