@@ -2,7 +2,6 @@
     <div class="container">
         <div class="navbar-content">
             <div class="navbar-brand">
-                <h2>📊 Microservicios</h2>
             </div>
 
             <div class="navbar-menu">
@@ -12,8 +11,10 @@
             </div>
 
             <div class="navbar-user" *ngIf="currentUser">
-                <span class="user-name">{{ currentUser.username || currentUser.email }}</span>
-                <button class="btn btn-secondary btn-sm" (click)="logout()">Salir</button>
+                <span class="user-name">👤 {{ currentUser.username || currentUser.email }}</span>
+                <button class="btn btn-logout btn-sm" (click)="logout()">
+                    Cerrar Sesión
+                </button>
             </div>
         </div>
     </div>

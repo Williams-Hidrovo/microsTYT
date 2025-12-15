@@ -26,7 +26,11 @@ export class AuthService {
             `${environment.authServiceUrl}/api/auth/login`,
             credentials
         ).pipe(
-            tap(response => this.handleAuthResponse(response))
+            tap(response => {
+                this.handleAuthResponse(response);
+                // Decodificar el token y extraer el usuario
+                this.setUserFromToken(response.accessToken);
+            })
         );
     }
 
@@ -35,7 +39,11 @@ export class AuthService {
             `${environment.authServiceUrl}/api/auth/register`,
             data
         ).pipe(
-            tap(response => this.handleAuthResponse(response))
+            tap(response => {
+                this.handleAuthResponse(response);
+                // Decodificar el token y extraer el usuario
+                this.setUserFromToken(response.accessToken);
+            })
         );
     }
 
@@ -44,7 +52,8 @@ export class AuthService {
         if (refreshToken) {
             // Intentar revocar el token antes de limpiar
             this.revokeToken({ refreshToken }).subscribe({
-                complete: () => this.clearAuthData()
+                next: () => this.clearAuthData(),
+                error: () => this.clearAuthData() // Limpiar aunque falle la revocación
             });
         } else {
             this.clearAuthData();
@@ -98,9 +107,6 @@ export class AuthService {
     private handleAuthResponse(response: AuthResponse): void {
         localStorage.setItem(this.AUTH_TOKEN_KEY, response.accessToken);
         localStorage.setItem(this.REFRESH_TOKEN_KEY, response.refreshToken);
-        // No tenemos userId/email en la respuesta, los obtendremos del token o de /me
-        // Por ahora solo guardamos los tokens
-        this.currentUserSubject.next(null);
     }
 
     private clearAuthData(): void {
@@ -114,5 +120,32 @@ export class AuthService {
     private getUserFromStorage(): User | null {
         const userJson = localStorage.getItem(this.USER_KEY);
         return userJson ? JSON.parse(userJson) : null;
+    }
+
+    private setUserFromToken(token: string): void {
+        try {
+            // Decodificar el JWT (formato: header.payload.signature)
+            const parts = token.split('.');
+            if (parts.length !== 3) {
+                console.error('Token JWT inválido');
+                return;
+            }
+
+            // Decodificar el payload (segunda parte)
+            const payload = JSON.parse(atob(parts[1]));
+
+            // Extraer claims del usuario
+            const user: User = {
+                userId: payload.sub || payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'],
+                email: payload.email || payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'],
+                username: payload.username || payload.email
+            };
+
+            // Guardar en localStorage y actualizar el subject
+            localStorage.setItem(this.USER_KEY, JSON.stringify(user));
+            this.currentUserSubject.next(user);
+        } catch (error) {
+            console.error('Error al decodificar token:', error);
+        }
     }
 }

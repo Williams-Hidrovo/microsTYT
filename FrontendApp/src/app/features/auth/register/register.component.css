@@ -3,7 +3,7 @@
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #303030 0%, #505050 100%);
     padding: 20px;
 }
 
@@ -35,12 +35,13 @@ h1 {
 }
 
 .auth-footer a {
-    color: #007bff;
+    color: #0BA7DF;
     text-decoration: none;
 }
 
 .auth-footer a:hover {
     text-decoration: underline;
+    color: #088BB8;
 }
 
 .error-message {

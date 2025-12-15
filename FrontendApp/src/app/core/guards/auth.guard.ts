@@ -16,6 +16,14 @@ export class AuthGuard implements CanActivate {
         state: RouterStateSnapshot
     ): boolean {
         if (this.authService.isAuthenticated()) {
+            // Si está autenticado pero no hay usuario cargado, intentar cargar del storage
+            if (!this.authService.getCurrentUser()) {
+                const token = this.authService.getToken();
+                if (token) {
+                    // El servicio cargará el usuario del token o storage automáticamente
+                    // Si no hay usuario en storage, el navbar simplemente no se mostrará
+                }
+            }
             return true;
         }
 

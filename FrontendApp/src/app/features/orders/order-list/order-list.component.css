@@ -31,23 +31,27 @@
 }
 
 .badge-completed {
-    background-color: #d4edda;
-    color: #155724;
+    background-color: #E8F8FC;
+    color: #088BB8;
+    border: 1px solid #0BA7DF;
 }
 
 .badge-pending {
-    background-color: #fff3cd;
+    background-color: #FFF8E1;
     color: #856404;
+    border: 1px solid #FFD54F;
 }
 
 .badge-processing {
-    background-color: #d1ecf1;
-    color: #0c5460;
+    background-color: #E8F8FC;
+    color: #0BA7DF;
+    border: 1px solid #0BA7DF;
 }
 
 .badge-cancelled {
-    background-color: #f8d7da;
+    background-color: #FFEBEE;
     color: #721c24;
+    border: 1px solid #EF5350;
 }
 
 @media (max-width: 768px) {

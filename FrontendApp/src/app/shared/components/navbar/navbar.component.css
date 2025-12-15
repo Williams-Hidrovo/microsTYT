@@ -1,6 +1,6 @@
 .navbar {
-    background: white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: #303030;
+    box-shadow: 0 2px 8px rgba(48, 48, 48, 0.15);
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -16,7 +16,7 @@
 .navbar-brand h2 {
     margin: 0;
     font-size: 1.5rem;
-    color: #333;
+    color: #FFFFFF;
 }
 
 .navbar-menu {
@@ -26,20 +26,20 @@
 
 .navbar-menu a {
     text-decoration: none;
-    color: #666;
+    color: #E0E0E0;
     font-weight: 500;
-    transition: color 0.3s;
+    transition: all 0.3s;
     padding: 8px 0;
     border-bottom: 2px solid transparent;
 }
 
 .navbar-menu a:hover {
-    color: #007bff;
+    color: #0BA7DF;
 }
 
 .navbar-menu a.active {
-    color: #007bff;
-    border-bottom-color: #007bff;
+    color: #0BA7DF;
+    border-bottom-color: #0BA7DF;
 }
 
 .navbar-user {
@@ -49,13 +49,28 @@
 }
 
 .user-name {
-    color: #333;
+    color: #FFFFFF;
     font-weight: 500;
 }
 
 .btn-sm {
     padding: 6px 16px;
     font-size: 13px;
+}
+
+.btn-logout {
+    background-color: #0BA7DF;
+    color: #FFFFFF;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s;
+}
+
+.btn-logout:hover {
+    background-color: #088BB8;
 }
 
 @media (max-width: 768px) {
